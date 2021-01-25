@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform playerCamera = null;
     [SerializeField] float mouseSensitivity = 3.5f;
     [SerializeField] float walkSpeed = 6.0f;
+    [SerializeField] float SprintSpeed = 8.0f;
+    [SerializeField] float moveSpeed;
     [SerializeField] float gravity = -13.0f;
     [SerializeField][Range(0.0f, 0.5f)] float moveSmoothTime = 0.3f;
     [SerializeField][Range(0.0f, 0.5f)] float mouseSmoothTime = 0.03f;
@@ -54,7 +56,12 @@ public class PlayerController : MonoBehaviour
 
     void UpdateMovement()
     {
-        Vector2 targetDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            if(Input.GetKey(KeyCode.LeftShift)){
+            moveSpeed = SprintSpeed;
+        }else{
+            moveSpeed = walkSpeed;
+        }
+           Vector2 targetDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         targetDir.Normalize();
 
         currentDir = Vector2.SmoothDamp(currentDir, targetDir, ref currentDirVelocity, moveSmoothTime);
@@ -64,9 +71,12 @@ public class PlayerController : MonoBehaviour
 
         velocityY += gravity * Time.deltaTime;
 		
-        Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * walkSpeed + Vector3.up * velocityY;
+        Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * moveSpeed + Vector3.up * velocityY;
 
         controller.Move(velocity * Time.deltaTime);
+     
+
+    
 
     }
 }
