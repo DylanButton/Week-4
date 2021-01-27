@@ -26,6 +26,8 @@ public class GunSystem : MonoBehaviour
     public TextMeshProUGUI text;
     public TextMeshProUGUI WhichGun;
     public string CurrentGun;
+    public Animator animator;
+
 
 
 
@@ -83,7 +85,12 @@ public class GunSystem : MonoBehaviour
         //CamShake.Shake(duration, magnitude);
 
         //Graphics
-        Instantiate(bulletHoleGraphic, rayHit.point, Quaternion.Euler(0, 0, 0));
+        if(rayHit.collider.CompareTag(("Bullet Hole Able"))){
+           GameObject ImpactGo = Instantiate(bulletHoleGraphic, rayHit.point, Quaternion.LookRotation(-rayHit.normal));
+      
+        }
+
+        
         Instantiate(muzzleFlash, attackPoint.position, Quaternion.identity);
 
         bulletsLeft--;
@@ -100,12 +107,16 @@ public class GunSystem : MonoBehaviour
     }
     private void Reload()
     {
-        reloading = true;
+        reloading = true;      
+        animator.SetBool("Realoading", true);  
         Invoke("ReloadFinished", reloadTime);
     }
     private void ReloadFinished()
     {
+        
         bulletsLeft = magazineSize;
         reloading = false;
+        animator.SetBool("Realoading", false);
+
     }
 }

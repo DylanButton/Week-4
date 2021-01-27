@@ -7,10 +7,10 @@ public float health = 50f;
 public GameObject DeathParticles;
 
 
-public void takeDamage(float amount)
+public void takeDamage(float damage)
 {
     
-    health -= amount;
+    health -= damage;
     if (health<=0f){
         Instantiate(DeathParticles, transform.position, transform.rotation);
         Die();
